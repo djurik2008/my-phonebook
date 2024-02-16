@@ -1,0 +1,22 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #333;
+  color: #fff;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffd700; /* жовтий колір для логотипу */
+  font-size: 1.5rem;
+}
+
+.logoSvg {
+  width: 5px;
+  height: 5px;
+  margin-right: 10px;
+}

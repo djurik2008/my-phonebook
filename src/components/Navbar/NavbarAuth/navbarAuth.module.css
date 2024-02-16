@@ -1,0 +1,17 @@
+.auth {
+  display: flex;
+}
+
+.link {
+  color: #007bff; /* Синій колір */
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link:global(.active) {
+  font-weight: bold; /* Наприклад, зробіть активне посилання жирним */
+}
