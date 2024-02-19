@@ -13,5 +13,6 @@
 }
 
 .link:global(.active) {
-  font-weight: bold; /* Наприклад, зробіть активне посилання жирним */
+  font-weight: bold;
+  text-decoration: underline;
 }

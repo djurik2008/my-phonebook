@@ -22,6 +22,7 @@
 
 .link:global(.active) {
   font-weight: bold;
+  text-decoration: underline;
 }
 
 .menu {
