@@ -1,9 +1,11 @@
 import { NavLink } from 'react-router-dom';
 import css from './navbarMenu.module.css';
+import { useSelector } from 'react-redux';
+import { selectAuthIsLogin } from '../../../redux/auth/auth-selectors';
 import menuItems from './menuItems';
 
 const NavbarMenu = () => {
-  const isLogin = true;
+  const isLogin = useSelector(selectAuthIsLogin);
 
   const filteredMenuItems = !isLogin
     ? menuItems.filter(item => !item.private)

@@ -1,29 +1,36 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectAuthLoading } from '../../redux/auth/auth-selectors';
 import css from './loginForm.module.css';
+import RegisterLoader from 'components/Loader/RegisterLoader';
 
-const LoginForm = () => {
-  // const dispatch = useDispatch();
-  const [userData, setUserData] = useState({
-    email: '',
-    password: '',
-  });
+const INITIAL_STATE = {
+  email: '',
+  password: '',
+};
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setUserData(prevState => ({
-      ...prevState,
+const LoginForm = ({ onSubmit }) => {
+  const [userData, setUserData] = useState({ ...INITIAL_STATE });
+  const isLoading = useSelector(selectAuthLoading);
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    setUserData({
+      ...userData,
       [name]: value,
-    }));
+    });
+  };
+
+  const reset = () => {
+    setUserData({ ...INITIAL_STATE });
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    //   dispatch(loginUser(userData));
-    // Очистити форму після входу
-    setUserData({
-      email: '',
-      password: '',
-    });
+    onSubmit({ ...userData });
+    if (isLoading === 'loginSucces') {
+      reset();
+    }
   };
 
   return (
@@ -51,7 +58,7 @@ const LoginForm = () => {
         />
       </label>
       <button className={css.button} type="submit">
-        Login
+        {isLoading === 'loginPending' ? <RegisterLoader /> : 'Login'}
       </button>
     </form>
   );

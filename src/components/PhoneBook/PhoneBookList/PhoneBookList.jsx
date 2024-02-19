@@ -8,9 +8,9 @@ const PhoneBookList = () => {
   const { items, isLoading, error } = useSelector(selectFilteredContacts);
   const dispatch = useDispatch();
 
-  const elements = items.map(({ id, name, phone }) => (
+  const elements = items.map(({ id, name, number }) => (
     <li key={id} className={css.item}>
-      {name}: {phone}
+      {name}: {number}
       <button
         type="button"
         onClick={() => dispatch(deleteContact(id))}

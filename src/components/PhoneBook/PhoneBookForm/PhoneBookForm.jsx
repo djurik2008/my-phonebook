@@ -8,7 +8,7 @@ import css from './PhoneBookForm.module.css';
 
 const INITIAL_STATE = {
   name: '',
-  phone: '',
+  number: '',
 };
 
 const TEXT_PATTERN =
@@ -62,9 +62,9 @@ const PhoneBookForm = () => {
           type="phone"
           className={css.input}
           pattern={PHONE_PATTERN}
-          name="phone"
+          name="number"
           onChange={handleChange}
-          value={state.phone}
+          value={state.number}
           required
         ></input>
       </label>

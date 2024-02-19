@@ -11,11 +11,11 @@ export const selectFilteredContacts = createSelector(
       return { items: items, isLoading, error };
     }
     const normalizedFilter = filter.toLowerCase();
-    const filteredContacts = items.filter(({ name, phone }) => {
+    const filteredContacts = items.filter(({ name, number }) => {
       const normalizedName = name.toLowerCase();
       return (
         normalizedName.includes(normalizedFilter) ||
-        phone.includes(normalizedFilter)
+        number.includes(normalizedFilter)
       );
     });
     return { items: filteredContacts, isLoading, error };

@@ -11,11 +11,6 @@ const initialState = {
   error: null,
 };
 
-// const pending = state => {
-//   state.isLoading = true;
-//   state.error = null;
-// };
-
 const rejected = (state, { payload }) => {
   state.isLoading = false;
   state.error = payload;

@@ -8,7 +8,7 @@ export const fetchContacts = createAsyncThunk(
       const data = await contactsApi.getContacts();
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -20,24 +20,24 @@ export const addContact = createAsyncThunk(
       const data = await contactsApi.addContact(body);
       return data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message);
     }
   },
   {
-    condition: ({ name, phone }, { getState }) => {
+    condition: ({ name, number }, { getState }) => {
       const { contacts } = getState();
       const normalizedName = name.toLowerCase();
 
       const dublicate = contacts.items.find(item => {
         const normalizedCurrentName = item.name.toLowerCase();
-        const currentPhone = item.phone;
+        const currentPhone = item.number;
         return (
-          normalizedCurrentName === normalizedName || currentPhone === phone
+          normalizedCurrentName === normalizedName || currentPhone === number
         );
       });
 
       if (dublicate) {
-        alert(`Contact with name ${name} and number ${phone} already in list`);
+        alert(`Contact with name ${name} and number ${number} already in list`);
         return false;
       }
     },

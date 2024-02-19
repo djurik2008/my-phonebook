@@ -1,31 +1,37 @@
 import { useState } from 'react';
 import css from './registerForm.module.css';
+import { useSelector } from 'react-redux';
+import { selectAuthLoading } from '../../redux/auth/auth-selectors';
+import RegisterLoader from 'components/Loader/RegisterLoader';
 
-const RegistrationForm = () => {
-  // const dispatch = useDispatch();
-  const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
+const INITIAL_STATE = {
+  name: '',
+  email: '',
+  password: '',
+};
 
-  const handleChange = e => {
-    const { name, value } = e.target;
+const RegistrationForm = ({ onSubmit }) => {
+  const [userData, setUserData] = useState({ ...INITIAL_STATE });
+  const isLoading = useSelector(selectAuthLoading);
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
     setUserData(prevState => ({
       ...prevState,
       [name]: value,
     }));
   };
 
+  const reset = () => {
+    setUserData({ ...INITIAL_STATE });
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
-    //   dispatch(registerUser(userData));
-    // Очистити форму після реєстрації
-    setUserData({
-      name: '',
-      email: '',
-      password: '',
-    });
+    onSubmit({ ...userData });
+    if (isLoading === 'signupSucces') {
+      reset();
+    }
   };
 
   return (
@@ -61,10 +67,11 @@ const RegistrationForm = () => {
           value={userData.password}
           onChange={handleChange}
           required
+          minLength={7}
         />
       </label>
       <button className={css.button} type="submit">
-        Register
+        {isLoading === 'signupPending' ? <RegisterLoader /> : 'Register'}
       </button>
     </form>
   );

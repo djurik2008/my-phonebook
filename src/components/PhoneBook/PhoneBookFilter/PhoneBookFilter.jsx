@@ -8,7 +8,7 @@ const PhoneBookFilter = () => {
   const changeFitler = ({ target }) =>
     dispatch(setFilter(target.value.toLowerCase()));
   return (
-    <div>
+    <div className={css.filter}>
       <input
         onChange={changeFitler}
         name="filter"
