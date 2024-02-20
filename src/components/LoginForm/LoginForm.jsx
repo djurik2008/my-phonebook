@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAuthLoading } from '../../redux/auth/auth-selectors';
 import css from './loginForm.module.css';
-import RegisterLoader from 'components/Loader/RegisterLoader';
+import FormButton from 'components/FormButton/FormButton';
 
 const INITIAL_STATE = {
   email: '',
@@ -20,6 +20,12 @@ const LoginForm = ({ onSubmit }) => {
       [name]: value,
     });
   };
+
+  let loading = false;
+
+  if (isLoading === 'loginPending') {
+    loading = true;
+  }
 
   const reset = () => {
     setUserData({ ...INITIAL_STATE });
@@ -57,9 +63,7 @@ const LoginForm = ({ onSubmit }) => {
           required
         />
       </label>
-      <button className={css.button} type="submit">
-        {isLoading === 'loginPending' ? <RegisterLoader /> : 'Login'}
-      </button>
+      <FormButton text="Login" loading={loading} />
     </form>
   );
 };
