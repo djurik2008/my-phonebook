@@ -3,23 +3,25 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteContact } from '../../../redux/myPhoneBook/contacts/contacs-operations';
 import { selectFilteredContacts } from '../../../redux/myPhoneBook/contacts/contacts-selectors';
 import Loader from 'components/Loader/Loader';
+import DeleteButton from 'components/DeleteButton/DeleteButton';
 
 const PhoneBookList = () => {
   const { items, isLoading, error } = useSelector(selectFilteredContacts);
   const dispatch = useDispatch();
+  const onDelete = id => () => dispatch(deleteContact(id));
 
-  const elements = items.map(({ id, name, number }) => (
-    <li key={id} className={css.item}>
-      {name}: {number}
-      <button
-        type="button"
-        onClick={() => dispatch(deleteContact(id))}
-        className={css.buttonDel}
-      >
-        {isLoading === id ? <Loader /> : 'Delete'}
-      </button>
-    </li>
-  ));
+  let loading = false;
+  const elements = items.map(({ id, name, number }) => {
+    if (isLoading === id) {
+      loading = true;
+    }
+    return (
+      <li key={id} className={css.item}>
+        {name}: {number}
+        <DeleteButton loading={loading} func={onDelete(id)} />
+      </li>
+    );
+  });
   return (
     <div>
       {isLoading === 'fetch' && <Loader />}
