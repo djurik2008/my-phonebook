@@ -38,6 +38,7 @@ export const addContact = createAsyncThunk(
 
       if (dublicate) {
         alert(`Contact with name ${name} and number ${number} already in list`);
+        contacts.isLoading = false;
         return false;
       }
     },
@@ -51,7 +52,7 @@ export const deleteContact = createAsyncThunk(
       await contactsApi.removeContact(id);
       return id;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );

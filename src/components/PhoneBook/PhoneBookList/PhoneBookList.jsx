@@ -4,16 +4,25 @@ import { deleteContact } from '../../../redux/myPhoneBook/contacts/contacs-opera
 import { selectFilteredContacts } from '../../../redux/myPhoneBook/contacts/contacts-selectors';
 import Loader from 'components/Loader/Loader';
 import DeleteButton from 'components/DeleteButton/DeleteButton';
+import { Notify } from 'notiflix';
 
 const PhoneBookList = () => {
   const { items, isLoading, error } = useSelector(selectFilteredContacts);
   const dispatch = useDispatch();
   const onDelete = id => () => dispatch(deleteContact(id));
 
+  if (isLoading === 'addSucces') {
+    Notify.success('Contact added');
+  }
+
+  if (error) {
+    Notify.failure(error);
+  }
   let loading = false;
   const elements = items.map(({ id, name, number }) => {
     if (isLoading === id) {
       loading = true;
+      Notify.success('Contact deleted');
     }
     return (
       <li key={id} className={css.item}>

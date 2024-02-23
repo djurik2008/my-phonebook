@@ -2,6 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { selectFilter } from '../filter/filter.selectors';
 
 const selectAllContacts = store => store.contacts;
+export const selectIsLoading = store => store.contacts.isLoading;
 
 export const selectFilteredContacts = createSelector(
   [selectAllContacts, selectFilter],

@@ -33,7 +33,7 @@ export const contactsSlice = createSlice({
         state.isLoading = 'add';
       })
       .addCase(addContact.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
+        state.isLoading = 'addSucces';
         state.items.push(payload);
       })
       .addCase(addContact.rejected, rejected)
@@ -41,7 +41,7 @@ export const contactsSlice = createSlice({
         state.isLoading = meta.arg;
       })
       .addCase(deleteContact.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
+        state.isLoading = payload;
         state.items = state.items.filter(({ id }) => id !== payload);
       })
       .addCase(deleteContact.rejected, rejected);

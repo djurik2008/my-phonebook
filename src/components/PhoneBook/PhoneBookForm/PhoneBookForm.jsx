@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from '../../../redux/myPhoneBook/contacts/contacs-operations';
-import Loader from 'components/Loader/Loader';
+import FormButton from 'components/FormButton/FormButton';
 import { selectFilteredContacts } from '../../../redux/myPhoneBook/contacts/contacts-selectors';
 
 import css from './PhoneBookForm.module.css';
@@ -20,9 +20,15 @@ const PHONE_PATTERN =
 const PhoneBookForm = () => {
   const { isLoading } = useSelector(selectFilteredContacts);
   const [state, setState] = useState({ ...INITIAL_STATE });
-
+  console.log(isLoading);
   const dispatch = useDispatch();
   const contactData = { ...state };
+
+  let loading = false;
+
+  if (isLoading === 'add') {
+    loading = true;
+  }
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -32,14 +38,16 @@ const PhoneBookForm = () => {
     });
   };
 
+  const reset = () => {
+    setState({ ...INITIAL_STATE });
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
     dispatch(addContact(contactData));
-    reset();
-  };
-
-  const reset = () => {
-    setState({ ...INITIAL_STATE });
+    if (isLoading === 'addSucces') {
+      reset();
+    }
   };
 
   return (
@@ -68,9 +76,7 @@ const PhoneBookForm = () => {
           required
         ></input>
       </label>
-      <button type="submit" className={css.button}>
-        {isLoading === 'add' ? <Loader /> : 'Add contact'}
-      </button>
+      <FormButton text={'Add contact'} loading={loading} />
     </form>
   );
 };
