@@ -11,11 +11,11 @@ const PhoneBook = () => {
     dispatch(fetchContacts());
   });
   return (
-    <div>
+    <>
       <PhoneBookForm />
       <PhoneBookFilter />
       <PhoneBookList />
-    </div>
+    </>
   );
 };
 

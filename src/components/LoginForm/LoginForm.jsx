@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAuthLoading } from '../../redux/auth/auth-selectors';
 import css from './loginForm.module.css';
-import FormButton from 'components/FormButton/FormButton';
+import FormButton from 'components/Buttons/FormButton';
 
 const INITIAL_STATE = {
   email: '',

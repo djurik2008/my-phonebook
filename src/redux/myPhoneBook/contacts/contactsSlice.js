@@ -3,17 +3,13 @@ import {
   fetchContacts,
   addContact,
   deleteContact,
+  editeContact,
 } from '../../../redux/myPhoneBook/contacts/contacs-operations';
 
 const initialState = {
   items: [],
-  isLoading: false,
+  fetchLoading: false,
   error: null,
-};
-
-const rejected = (state, { payload }) => {
-  state.isLoading = false;
-  state.error = payload;
 };
 
 export const contactsSlice = createSlice({
@@ -22,29 +18,36 @@ export const contactsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchContacts.pending, state => {
-        state.isLoading = 'fetch';
+        state.fetchLoading = true;
       })
       .addCase(fetchContacts.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
+        state.fetchLoading = false;
         state.items = payload;
       })
-      .addCase(fetchContacts.rejected, rejected)
-      .addCase(addContact.pending, state => {
-        state.isLoading = 'add';
+      .addCase(fetchContacts.rejected, (state, { payload }) => {
+        state.fetchLoading = false;
+        state.error = payload;
       })
       .addCase(addContact.fulfilled, (state, { payload }) => {
-        state.isLoading = 'addSucces';
         state.items.push(payload);
       })
-      .addCase(addContact.rejected, rejected)
-      .addCase(deleteContact.pending, (state, { meta }) => {
-        state.isLoading = meta.arg;
+      .addCase(addContact.rejected, (state, { payload }) => {
+        state.error = payload;
       })
       .addCase(deleteContact.fulfilled, (state, { payload }) => {
-        state.isLoading = payload;
         state.items = state.items.filter(({ id }) => id !== payload);
       })
-      .addCase(deleteContact.rejected, rejected);
+      .addCase(deleteContact.rejected, (state, { payload }) => {
+        state.error = payload;
+      })
+      .addCase(editeContact.fulfilled, (state, { payload }) => {
+        state.error = null;
+        const idx = state.items.findIndex(contact => contact.id === payload.id);
+        state.items.splice(idx, 1, payload);
+      })
+      .addCase(editeContact.rejected, (state, { payload }) => {
+        state.error = payload;
+      });
   },
 });
 

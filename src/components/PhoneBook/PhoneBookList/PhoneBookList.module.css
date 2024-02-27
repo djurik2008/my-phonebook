@@ -6,9 +6,9 @@
 }
 
 .item {
-  display: flex;
+  /* display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; */
   height: 45px;
   padding: 6px;
   margin-top: 6px;

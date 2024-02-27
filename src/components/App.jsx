@@ -11,9 +11,5 @@ export const App = () => {
     dispatch(current());
   });
 
-  return (
-    <div>
-      <AppRoutes />
-    </div>
-  );
+  return <AppRoutes />;
 };

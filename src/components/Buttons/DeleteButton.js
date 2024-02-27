@@ -1,13 +1,13 @@
 import { Button } from 'antd';
 
-const DeleteButton = ({ loading, func }) => {
+const DeleteButton = ({ loading, onClick }) => {
   return (
     <Button
       loading={loading}
       htmlType="button"
       size="small"
       danger
-      onClick={func}
+      onClick={onClick}
     >
       Delete
     </Button>

@@ -1,16 +1,10 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../../redux/myPhoneBook/contacts/contacs-operations';
-import FormButton from 'components/Buttons/FormButton';
-import { selectFilteredContacts } from '../../../redux/myPhoneBook/contacts/contacts-selectors';
+import { editeContact } from '../../../redux/myPhoneBook/contacts/contacs-operations';
+import { selectContactsState } from '../../../redux/myPhoneBook/contacts/contacts-selectors';
+import FormButton from '../../Buttons/FormButton';
+import css from '../PhoneBookForm/PhoneBookForm.module.css';
 import { Notify, Report } from 'notiflix';
-
-import css from './PhoneBookForm.module.css';
-
-const INITIAL_STATE = {
-  name: '',
-  number: '',
-};
 
 const TEXT_PATTERN =
   "^[a-zA-Zа-яА-Я]+(([' \\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
@@ -18,11 +12,12 @@ const TEXT_PATTERN =
 const PHONE_PATTERN =
   '\\+?\\d{1,4}?[ .\\-\\s]?\\(?\\d{1,3}?\\)?[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,9}';
 
-const PhoneBookForm = () => {
-  const [state, setState] = useState({ ...INITIAL_STATE });
+const EditeForm = ({ contact, onSubmit }) => {
+  const { id, name, number } = contact;
+  const [state, setState] = useState({ name, number });
   const [loading, setLoading] = useState(false);
-  const { error } = useSelector(selectFilteredContacts);
   const dispatch = useDispatch();
+  const { error } = useSelector(selectContactsState);
 
   if (error) {
     Report.failure(error);
@@ -36,18 +31,16 @@ const PhoneBookForm = () => {
     }));
   };
 
-  const reset = () => {
-    setState({ ...INITIAL_STATE });
-  };
-
   const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
     try {
-      const actionResult = await dispatch(addContact({ ...state }));
-      if (addContact.fulfilled.match(actionResult)) {
-        Notify.success('Contact added');
-        reset();
+      const actionResult = await dispatch(
+        editeContact({ id, body: { ...state } })
+      );
+      if (editeContact.fulfilled.match(actionResult)) {
+        Notify.success('Contact edited');
+        onSubmit();
       }
     } finally {
       setLoading(false);
@@ -80,9 +73,9 @@ const PhoneBookForm = () => {
           required
         ></input>
       </label>
-      <FormButton text={'Add contact'} loading={loading} />
+      <FormButton text={'Update contact'} loading={loading} />
     </form>
   );
 };
 
-export default PhoneBookForm;
+export default EditeForm;

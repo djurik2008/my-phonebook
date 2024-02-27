@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 
-const FormButton = ({ text, loading }) => {
+const FormButton = ({ text, loading = false }) => {
   return (
     <Button
       type="primary"
