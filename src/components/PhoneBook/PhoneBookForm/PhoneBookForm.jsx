@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from '../../../redux/myPhoneBook/contacts/contacs-operations';
 import FormButton from 'components/Buttons/FormButton';
-import { selectFilteredContacts } from '../../../redux/myPhoneBook/contacts/contacts-selectors';
-import { Notify, Report } from 'notiflix';
+import { selectContactsState } from '../../../redux/myPhoneBook/contacts/contacts-selectors';
 
 import css from './PhoneBookForm.module.css';
 
@@ -13,20 +12,15 @@ const INITIAL_STATE = {
 };
 
 const TEXT_PATTERN =
-  "^[a-zA-Zа-яА-Я]+(([' \\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
+  "^[a-zA-Zа-яА-Я]+(([' \\-][a-zA-Zа-яА-Я0-9 ])?[a-zA-Zа-яА-Я0-9]*)*$";
 
 const PHONE_PATTERN =
   '\\+?\\d{1,4}?[ .\\-\\s]?\\(?\\d{1,3}?\\)?[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,9}';
 
 const PhoneBookForm = () => {
   const [state, setState] = useState({ ...INITIAL_STATE });
-  const [loading, setLoading] = useState(false);
-  const { error } = useSelector(selectFilteredContacts);
+  const { addLoading, error } = useSelector(selectContactsState);
   const dispatch = useDispatch();
-
-  if (error) {
-    Report.failure(error);
-  }
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -40,17 +34,11 @@ const PhoneBookForm = () => {
     setState({ ...INITIAL_STATE });
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      const actionResult = await dispatch(addContact({ ...state }));
-      if (addContact.fulfilled.match(actionResult)) {
-        Notify.success('Contact added');
-        reset();
-      }
-    } finally {
-      setLoading(false);
+    dispatch(addContact({ ...state }));
+    if (!error) {
+      reset();
     }
   };
 
@@ -80,7 +68,7 @@ const PhoneBookForm = () => {
           required
         ></input>
       </label>
-      <FormButton text={'Add contact'} loading={loading} />
+      <FormButton text={'Add contact'} loading={addLoading} />
     </form>
   );
 };

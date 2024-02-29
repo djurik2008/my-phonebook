@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as contactsApi from '../../../api/contacts-api';
+import { Notify, Report } from 'notiflix';
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
@@ -8,7 +9,8 @@ export const fetchContacts = createAsyncThunk(
       const data = await contactsApi.getContacts();
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message);
+      Report.failure(error.message);
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -18,9 +20,11 @@ export const addContact = createAsyncThunk(
   async (body, { rejectWithValue }) => {
     try {
       const data = await contactsApi.addContact(body);
+      Notify.success('Contact added');
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message);
+      Report.failure(error.message);
+      return rejectWithValue(error.message);
     }
   },
   {
@@ -37,7 +41,10 @@ export const addContact = createAsyncThunk(
       });
 
       if (dublicate) {
-        alert(`Contact with name ${name} and number ${number} already in list`);
+        Report.warning(
+          'Ooops',
+          `Contact with name ${name} and number ${number} already in list`
+        );
         return false;
       }
     },
@@ -49,8 +56,10 @@ export const deleteContact = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       await contactsApi.removeContact(id);
+      Notify.success('Contact deleted');
       return id;
     } catch (error) {
+      Report.failure(error.message);
       return rejectWithValue(error.message);
     }
   }
@@ -61,8 +70,10 @@ export const editeContact = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await contactsApi.editeContact(data.id, data.body);
+      Notify.success('Contact edited');
       return response;
     } catch (error) {
+      Report.failure(error.message);
       return rejectWithValue(error.message);
     }
   }

@@ -23,7 +23,6 @@ const authSlice = createSlice({
         state.user = payload.user;
         state.token = payload.token;
         state.isLogin = true;
-        state.error = null;
       })
       .addCase(signup.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -38,7 +37,6 @@ const authSlice = createSlice({
         state.user = payload.user;
         state.token = payload.token;
         state.isLogin = true;
-        state.error = null;
       })
       .addCase(login.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -52,7 +50,6 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = payload;
         state.isLogin = true;
-        state.error = null;
       })
       .addCase(current.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -61,6 +58,7 @@ const authSlice = createSlice({
       })
       .addCase(logout.pending, state => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(logout.fulfilled, state => {
         state.isLoading = false;

@@ -4,7 +4,6 @@ import { editeContact } from '../../../redux/myPhoneBook/contacts/contacs-operat
 import { selectContactsState } from '../../../redux/myPhoneBook/contacts/contacts-selectors';
 import FormButton from '../../Buttons/FormButton';
 import css from '../PhoneBookForm/PhoneBookForm.module.css';
-import { Notify, Report } from 'notiflix';
 
 const TEXT_PATTERN =
   "^[a-zA-Zа-яА-Я]+(([' \\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
@@ -15,13 +14,8 @@ const PHONE_PATTERN =
 const EditeForm = ({ contact, onSubmit }) => {
   const { id, name, number } = contact;
   const [state, setState] = useState({ name, number });
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const { error } = useSelector(selectContactsState);
-
-  if (error) {
-    Report.failure(error);
-  }
+  const { editeLoading, error } = useSelector(selectContactsState);
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -31,19 +25,11 @@ const EditeForm = ({ contact, onSubmit }) => {
     }));
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    setLoading(true);
-    try {
-      const actionResult = await dispatch(
-        editeContact({ id, body: { ...state } })
-      );
-      if (editeContact.fulfilled.match(actionResult)) {
-        Notify.success('Contact edited');
-        onSubmit();
-      }
-    } finally {
-      setLoading(false);
+    dispatch(editeContact({ id, body: { ...state } }));
+    if (!error) {
+      onSubmit();
     }
   };
 
@@ -73,7 +59,7 @@ const EditeForm = ({ contact, onSubmit }) => {
           required
         ></input>
       </label>
-      <FormButton text={'Update contact'} loading={loading} />
+      <FormButton text={'Save changes'} loading={editeLoading} />
     </form>
   );
 };

@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import css from './registerForm.module.css';
 import { useSelector } from 'react-redux';
-import { selectAuthLoading } from '../../redux/auth/auth-selectors';
+import {
+  selectAuthLoading,
+  selectAuthIsLogin,
+} from '../../redux/auth/auth-selectors';
 import FormButton from 'components/Buttons/FormButton';
 
 const INITIAL_STATE = {
@@ -13,6 +16,7 @@ const INITIAL_STATE = {
 const RegistrationForm = ({ onSubmit }) => {
   const [userData, setUserData] = useState({ ...INITIAL_STATE });
   const isLoading = useSelector(selectAuthLoading);
+  const isLogin = useSelector(selectAuthIsLogin);
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -29,7 +33,7 @@ const RegistrationForm = ({ onSubmit }) => {
   const handleSubmit = e => {
     e.preventDefault();
     onSubmit({ ...userData });
-    if (isLoading === 'signupSucces') {
+    if (isLogin) {
       reset();
     }
   };

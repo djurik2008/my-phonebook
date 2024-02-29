@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectAuthLoading } from '../../redux/auth/auth-selectors';
+import {
+  selectAuthLoading,
+  selectAuthIsLogin,
+} from '../../redux/auth/auth-selectors';
 import css from './loginForm.module.css';
 import FormButton from 'components/Buttons/FormButton';
 
@@ -12,6 +15,7 @@ const INITIAL_STATE = {
 const LoginForm = ({ onSubmit }) => {
   const [userData, setUserData] = useState({ ...INITIAL_STATE });
   const isLoading = useSelector(selectAuthLoading);
+  const isLogin = useSelector(selectAuthIsLogin);
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -21,12 +25,6 @@ const LoginForm = ({ onSubmit }) => {
     });
   };
 
-  let loading = false;
-
-  if (isLoading === 'loginPending') {
-    loading = true;
-  }
-
   const reset = () => {
     setUserData({ ...INITIAL_STATE });
   };
@@ -34,7 +32,7 @@ const LoginForm = ({ onSubmit }) => {
   const handleSubmit = e => {
     e.preventDefault();
     onSubmit({ ...userData });
-    if (isLoading === 'loginSucces') {
+    if (isLogin) {
       reset();
     }
   };
@@ -63,7 +61,7 @@ const LoginForm = ({ onSubmit }) => {
           required
         />
       </label>
-      <FormButton text="Login" loading={loading} />
+      <FormButton text="Login" loading={isLoading} />
     </form>
   );
 };

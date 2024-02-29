@@ -9,6 +9,8 @@ import {
 const initialState = {
   items: [],
   fetchLoading: false,
+  addLoading: false,
+  editeLoading: false,
   error: null,
 };
 
@@ -19,6 +21,7 @@ export const contactsSlice = createSlice({
     builder
       .addCase(fetchContacts.pending, state => {
         state.fetchLoading = true;
+        state.error = null;
       })
       .addCase(fetchContacts.fulfilled, (state, { payload }) => {
         state.fetchLoading = false;
@@ -28,11 +31,20 @@ export const contactsSlice = createSlice({
         state.fetchLoading = false;
         state.error = payload;
       })
+      .addCase(addContact.pending, state => {
+        state.addLoading = true;
+        state.error = null;
+      })
       .addCase(addContact.fulfilled, (state, { payload }) => {
+        state.addLoading = false;
         state.items.push(payload);
       })
       .addCase(addContact.rejected, (state, { payload }) => {
+        state.addLoading = false;
         state.error = payload;
+      })
+      .addCase(deleteContact.pending, state => {
+        state.error = null;
       })
       .addCase(deleteContact.fulfilled, (state, { payload }) => {
         state.items = state.items.filter(({ id }) => id !== payload);
@@ -40,12 +52,17 @@ export const contactsSlice = createSlice({
       .addCase(deleteContact.rejected, (state, { payload }) => {
         state.error = payload;
       })
-      .addCase(editeContact.fulfilled, (state, { payload }) => {
+      .addCase(editeContact.pending, state => {
+        state.editeLoading = true;
         state.error = null;
+      })
+      .addCase(editeContact.fulfilled, (state, { payload }) => {
+        state.editeLoading = false;
         const idx = state.items.findIndex(contact => contact.id === payload.id);
         state.items.splice(idx, 1, payload);
       })
       .addCase(editeContact.rejected, (state, { payload }) => {
+        state.editeLoading = false;
         state.error = payload;
       });
   },
