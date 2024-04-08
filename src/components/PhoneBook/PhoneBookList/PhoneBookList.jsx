@@ -15,13 +15,14 @@ const PhoneBookList = () => {
   if (error) {
     Report.failure(error);
   }
-  const elements = items.map(item => {
-    return <PhoneBookItem contact={item} key={item.id} />;
-  });
+  // const elements = items.map(item => {
+  //   return <PhoneBookItem contact={item} key={item.id} />;
+  // });
   return (
     <>
       {fetchLoading && <Loader />}
-      {Boolean(items.length) && <ul className={css.list}>{elements}</ul>}
+      {/* {Boolean(items.length) && <ul className={css.list}>{elements}</ul>} */}
+      {Boolean(items.length) && <PhoneBookItem contacts={items} />}
     </>
   );
 };

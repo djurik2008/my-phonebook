@@ -2,7 +2,7 @@ import PhoneBook from 'components/PhoneBook/PhoneBook';
 const MyContactsPage = () => {
   return (
     <main>
-      <PhoneBook />;
+      <PhoneBook />
     </main>
   );
 };
