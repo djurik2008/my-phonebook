@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { deleteContact } from '../../../redux/myPhoneBook/contacts/contacs-operations';
 import EditButton from 'components/Buttons/EditButton';
 import DeleteButton from 'components/Buttons/DeleteButton';
-import sprite from '../../../svg/sprite.svg';
+// import sprite from '../../../svg/sprite.svg';
 import { Flex, Table } from 'antd';
 import EditModal from 'components/Modal/Modal';
 import EditeForm from '../EditeForm/EditeForm';
