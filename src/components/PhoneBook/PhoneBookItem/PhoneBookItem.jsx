@@ -48,8 +48,8 @@ const PhoneBookItem = ({ contacts }) => {
     },
     {
       title: 'Phone number',
-      dataIndex: 'number',
-      key: 'number',
+      dataIndex: 'phone',
+      key: 'phone',
     },
     {
       title: 'Action',
@@ -57,7 +57,10 @@ const PhoneBookItem = ({ contacts }) => {
       render: (_, record) => (
         <Flex gap="small" justify="center">
           <EditButton onClick={() => handleEdit(record)} />
-          <DeleteButton loading={loading} onClick={() => onDelete(record.id)} />
+          <DeleteButton
+            loading={loading}
+            onClick={() => onDelete(record._id)}
+          />
         </Flex>
       ),
     },
@@ -66,7 +69,7 @@ const PhoneBookItem = ({ contacts }) => {
   return (
     <>
       <Table
-        rowKey={record => record.id}
+        rowKey={record => record._id}
         pagination={false}
         columns={columns}
         dataSource={contacts}

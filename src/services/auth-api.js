@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const authInstance = axios.create({
-  baseURL: 'https://connections-api.herokuapp.com',
+  baseURL: 'https://my-phonebook-5z0d.onrender.com/api',
 });
 
 const setToken = token => {
@@ -12,7 +12,7 @@ const setToken = token => {
 };
 
 export const signupPost = async body => {
-  const { data } = await authInstance.post('/users/signup', body);
+  const { data } = await authInstance.post('/users/register', body);
   setToken(data.token);
   return data;
 };

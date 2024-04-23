@@ -12,8 +12,8 @@ const PHONE_PATTERN =
   '\\+?\\d{1,4}?[ .\\-\\s]?\\(?\\d{1,3}?\\)?[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,9}';
 
 const EditeForm = ({ contact, onSubmit }) => {
-  const { id, name, number } = contact;
-  const [state, setState] = useState({ name, number });
+  const { _id: id, name, phone } = contact;
+  const [state, setState] = useState({ name, phone });
   const dispatch = useDispatch();
   const { editeLoading, error } = useSelector(selectContactsState);
 
@@ -53,9 +53,9 @@ const EditeForm = ({ contact, onSubmit }) => {
           type="phone"
           className={css.input}
           pattern={PHONE_PATTERN}
-          name="number"
+          name="phone"
           onChange={handleChange}
-          value={state.number}
+          value={state.phone}
           required
         ></input>
       </label>

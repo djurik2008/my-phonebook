@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import * as contactsApi from '../../../api/contacts-api';
+import * as contactsApi from '../../../services/contacts-api';
 import { Notify, Report } from 'notiflix';
 
 export const fetchContacts = createAsyncThunk(
@@ -7,7 +7,7 @@ export const fetchContacts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const data = await contactsApi.getContacts();
-      return data;
+      return data.result;
     } catch (error) {
       Report.failure(error.message);
       return rejectWithValue(error.message);
@@ -28,22 +28,22 @@ export const addContact = createAsyncThunk(
     }
   },
   {
-    condition: ({ name, number }, { getState }) => {
+    condition: ({ name, phone }, { getState }) => {
       const { contacts } = getState();
       const normalizedName = name.toLowerCase();
 
       const dublicate = contacts.items.find(item => {
         const normalizedCurrentName = item.name.toLowerCase();
-        const currentPhone = item.number;
+        const currentPhone = item.phone;
         return (
-          normalizedCurrentName === normalizedName || currentPhone === number
+          normalizedCurrentName === normalizedName || currentPhone === phone
         );
       });
 
       if (dublicate) {
         Report.warning(
           'Ooops',
-          `Contact with name ${name} and number ${number} already in list`
+          `Contact with name ${name} and number ${phone} already in list`
         );
         return false;
       }
@@ -59,7 +59,7 @@ export const deleteContact = createAsyncThunk(
       Notify.success('Contact deleted');
       return id;
     } catch (error) {
-      Report.failure(error.message);
+      Report.failure(error.response.data.message);
       return rejectWithValue(error.message);
     }
   }
@@ -73,6 +73,7 @@ export const editeContact = createAsyncThunk(
       Notify.success('Contact edited');
       return response;
     } catch (error) {
+      console.log(error);
       Report.failure(error.message);
       return rejectWithValue(error.message);
     }

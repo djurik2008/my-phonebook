@@ -8,7 +8,7 @@ import {
 import FormButton from 'components/Buttons/FormButton';
 
 const INITIAL_STATE = {
-  name: '',
+  username: '',
   email: '',
   password: '',
 };
@@ -45,8 +45,8 @@ const RegistrationForm = ({ onSubmit }) => {
         <input
           className={css.input}
           type="text"
-          name="name"
-          value={userData.name}
+          name="username"
+          value={userData.username}
           onChange={handleChange}
           required
         />
@@ -71,7 +71,7 @@ const RegistrationForm = ({ onSubmit }) => {
           value={userData.password}
           onChange={handleChange}
           required
-          minLength={7}
+          minLength={6}
         />
       </label>
       <FormButton text="Register" loading={isLoading} />

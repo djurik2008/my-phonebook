@@ -1,6 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { signupPost, loginPost, currentGet, logoutPost } from 'api/auth-api';
+import {
+  signupPost,
+  loginPost,
+  currentGet,
+  logoutPost,
+} from 'services/auth-api';
 import Notiflix from 'notiflix';
 
 export const signup = createAsyncThunk(
@@ -9,12 +14,12 @@ export const signup = createAsyncThunk(
     try {
       const data = await signupPost(body);
       Notiflix.Report.success(
-        `Congratulations ${data.user.name}, you have successfully registered`
+        `Congratulations ${data.user.username}, you have successfully registered`
       );
       return data;
     } catch (error) {
-      Notiflix.Report.failure(error.message);
-      return rejectWithValue(error.message);
+      Notiflix.Report.failure(error.response.data.message);
+      return rejectWithValue(error.response.data.message);
     }
   }
 );
@@ -24,7 +29,7 @@ export const login = createAsyncThunk(
   async (body, { rejectWithValue }) => {
     try {
       const data = await loginPost(body);
-      Notiflix.Report.success(`Welcome back ${data.user.name}`);
+      Notiflix.Report.success(`Welcome back ${data.user.username}`);
       return data;
     } catch (error) {
       Notiflix.Report.failure(error.message, 'Wrong email or password');
